@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import requests
-
+from multiprocessing.dummy import Pool as ThreadPool
 
 
 def mk_search(responsive='true',
@@ -36,12 +36,24 @@ def mk_search(responsive='true',
                      req_data)
    return r.text
 
+
+def make_req(i):
+   with open('data/f' + str(i), 'w') as f:
+      x = mk_search(page=str(i))
+      f.write(x)
+      print(str(i) + ' is done!')
+
+pool = ThreadPool(6)
+pool.map(make_req, range(0, 20))
+
+
+'''
 i = 0
 while i < 20:
    with open('data/f' + str(i), 'w') as f:
       x = mk_search(page=str(i))
       f.write(x)
    i += 1
-
+'''
 
 
